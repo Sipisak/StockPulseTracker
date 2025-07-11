@@ -20,13 +20,31 @@ export function StockSearch({ onStockSelect }: StockSearchProps) {
 
   const { data: stockData, isLoading, error } = useQuery({
     queryKey: ['/api/stocks/search', searchTerm],
+    queryFn: async () => {
+      if (!searchTerm) return null;
+      const response = await fetch(`/api/stocks/search?q=${encodeURIComponent(searchTerm)}`);
+      if (!response.ok) {
+        throw new Error('Stock not found');
+      }
+      return response.json();
+    },
     enabled: searchTerm.length > 0,
     staleTime: 30000,
   });
 
   const addToWatchlistMutation = useMutation({
     mutationFn: async (symbol: string) => {
-      const response = await apiRequest('POST', '/api/watchlist', { symbol });
+      const response = await fetch('/api/watchlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'user-id': 'anonymous',
+        },
+        body: JSON.stringify({ symbol }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add to watchlist');
+      }
       return response.json();
     },
     onSuccess: () => {

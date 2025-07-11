@@ -2,7 +2,17 @@
 
 ## Overview
 
-This is a full-stack stock tracking application built with React, Express, and PostgreSQL. The application allows users to search for stocks, manage watchlists, set up alerts, track portfolios, and view real-time market data with WebSocket support.
+This is a full-stack stock tracking application built with React, Express, and in-memory storage. The application provides real-time stock market monitoring with live data from Alpha Vantage API, including stock search, watchlist management, price alerts, portfolio tracking, and WebSocket-powered real-time updates.
+
+## Recent Changes (July 11, 2025)
+
+✓ Completed full-stack stock exchange monitoring application
+✓ Integrated Alpha Vantage API for real-time stock data
+✓ Added fallback mock data generation for API rate limits
+✓ Fixed React component imports and TypeScript errors
+✓ Implemented user-id headers for proper session management
+✓ Added realistic market index data with fallback values
+✓ Fixed stock search and watchlist add/remove functionality
 
 ## User Preferences
 

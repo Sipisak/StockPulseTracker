@@ -20,12 +20,31 @@ export function WatchlistTable({ onStockSelect }: WatchlistTableProps) {
 
   const { data: watchlist = [], isLoading } = useQuery<WatchlistItem[]>({
     queryKey: ['/api/watchlist'],
+    queryFn: async () => {
+      const response = await fetch('/api/watchlist', {
+        headers: {
+          'user-id': 'anonymous',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch watchlist');
+      }
+      return response.json();
+    },
     refetchInterval: 30000,
   });
 
   const removeFromWatchlistMutation = useMutation({
     mutationFn: async (symbol: string) => {
-      const response = await apiRequest('DELETE', `/api/watchlist/${symbol}`);
+      const response = await fetch(`/api/watchlist/${symbol}`, {
+        method: 'DELETE',
+        headers: {
+          'user-id': 'anonymous',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to remove from watchlist');
+      }
       return response.json();
     },
     onSuccess: () => {
