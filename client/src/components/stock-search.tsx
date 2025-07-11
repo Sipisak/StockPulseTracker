@@ -47,10 +47,10 @@ export function StockSearch({ onStockSelect }: StockSearchProps) {
       }
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       toast({
         title: "Added to watchlist",
-        description: `${selectedStock?.symbol} has been added to your watchlist.`,
+        description: `${variables} has been added to your watchlist.`,
       });
       queryClient.invalidateQueries({ queryKey: ['/api/watchlist'] });
       setSearchTerm("");
@@ -145,7 +145,10 @@ export function StockSearch({ onStockSelect }: StockSearchProps) {
                     </div>
                     <Button
                       size="sm"
-                      onClick={handleAddToWatchlist}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToWatchlistMutation.mutate(stockData.symbol);
+                      }}
                       disabled={addToWatchlistMutation.isPending}
                     >
                       <Plus className="h-4 w-4 mr-1" />
