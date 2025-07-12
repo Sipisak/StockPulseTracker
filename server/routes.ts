@@ -5,7 +5,7 @@ import { storage } from "./storage";
 import { insertStockSchema, insertWatchlistSchema, insertAlertSchema, insertPortfolioSchema } from "@shared/schema";
 import { z } from "zod";
 
-const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY || process.env.VITE_ALPHA_VANTAGE_API_KEY || "demo";
+const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY || "demo";
 
 interface StockData {
   symbol: string;
@@ -350,7 +350,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize market data and start real-time updates
   await fetchMarketIndices();
   
-  // Real-time data updates every 30 seconds
+  // Real-time data updates every 60 seconds
   setInterval(async () => {
     try {
       await fetchMarketIndices();
@@ -373,7 +373,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Real-time update error:', error);
     }
-  }, 30000);
+  }, 60000);
   
   return httpServer;
 }
